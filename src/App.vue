@@ -3,65 +3,52 @@
     <div v-if="!$store.state.items.length" class="retry">
       <b-button label="Load resource list"/>
     </div>
-    <div v-else class="items">
-      <h2>Expand any row to see more details...</h2>
-        <b-table :data="items"
-                 :columns="columns"
-                 ref="table"
-                 detailed
-                 show-detail-icon
-                 class="reading-list"
+    <section v-else class="main">
+      <b-select expanded v-model="currentItemTitle">
+        <option v-for="item in $store.state.items"
+                :key="item.Title"
+                :value="item.Title"
+                :title="item.Topic"
         >
-          <template #detail="props">
-            <div class="content">
-              <p v-if="props.row.Summary.length">
-                <strong>Summary:</strong> {{ props.row.Summary }}
-              </p>
-              <p v-if="props.row.Resource_url.length">
-                <a :href="props.row.Resource_url" target="_blank">
-                  {{ props.row.Resource_description }}
-                </a>
-              </p>
-              <div class="tags" v-if="props.row.Keywords.length">
-                <b-tag v-for="kw in props.row.Keywords" :key="kw">
-                  {{ kw }}
-                </b-tag>
-              </div>
-            </div>
-          </template>
-        </b-table>
-    </div>
+          {{ item.Title }} - {{ item.Topic }}
+        </option>
+      </b-select>
+      <div v-if="currentItem" class="items">
+        <h2>Expand any row to see more details...</h2>
+        <ReadingList :item="currentItem"/>
+        <footer>
+          Contributors: {{ currentItem.Contributors }}
+        </footer>
+      </div>
+    </section>
     <b-loading :active="$store.state.items_loading"/>
   </div>
 </template>
 
 <script>
 import store from './store.js'
+import ReadingList from "./components/ReadingList";
 
 export default {
   name: 'App',
+  components: {ReadingList},
   data: function() {
     return {
-      columns: [
-        {field: 'Order', label: 'Order', numeric: true},
-        {field: 'Block', label: 'Block'},
-        {field: 'Paper', label: 'Paper'}
-      ]
+      currentItemTitle: ""
     }
   },
-  components: {},
   computed: {
-    items() {
-      if(!this.$store.state.items.length)
-        return [];
-      const out = this.$store.state.items;
-      out.sort((a, b) => a.Order < b.Order? -1 : a.Order === b.Order? 0 : 1);
-      return out;
+    currentItem() {
+      if(!this.currentItemTitle)
+        return null;
+      return this.$store.state.items.filter(i => i.Title === this.currentItemTitle)[0];
     }
   },
   methods: {},
   mounted: function() {
-    this.$store.dispatch('findItems');
+    const me = this;
+    this.$store.dispatch('findItems')
+      .then(() => me.currentItemTitle = me.$store.state.items[0].Title);
   },
   store: store
 }
@@ -81,5 +68,10 @@ export default {
 }
 .reading-list {
   width: 100%;
+}
+footer {
+  text-align: right;
+  margin-right: 1em;
+  margin-top: .5em;
 }
 </style>

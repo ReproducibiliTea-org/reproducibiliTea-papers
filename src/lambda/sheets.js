@@ -17,7 +17,6 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
  */
 async function main(event, context, callback) {
     try {
-        let sheetData = {};
         console.log(`Fetching Google Sheets content`)
 
         const doc = new GoogleSpreadsheet(GOOGLE_SPREADSHEET_ID_FROM_URL);
@@ -29,13 +28,34 @@ async function main(event, context, callback) {
 
         await doc.loadInfo(); // loads document properties and worksheets. required.
 
-        const sheet = doc.sheetsByIndex[0]; // you may want to customize this if you have more than 1 sheet
+        let sheets = [];
+        let metadata = null;
+        for(let i = 0; i < doc.sheetCount; i++) {
+            const sheet = doc.sheetsByIndex[i];
 
-        const rows = await sheet.getRows(); // can pass in { limit, offset }
+            if(sheet.title[0] === '_')
+                continue;
 
-        sheetData = rows.map(r => serializeRow(sheet, r));
+            const rows = await sheet.getRows(); // can pass in { limit, offset }
+            const sheetData = rows.map(r => serializeRow(sheet, r));
+            if(sheet.title === 'Metadata') {
+                metadata = sheetData;
+            } else {
+                sheets.push({
+                    Title: sheet.title,
+                    Content: sheetData
+                });
+            }
+        }
 
-        callback(null, {statusCode: 200, body: JSON.stringify(sheetData)});
+        sheets = sheets.map(s => {
+            const md = metadata.filter(m => m.Title === s.Title);
+            if(!md.length)
+                return s;
+            return {...md[0], ...s};
+        });
+
+        callback(null, {statusCode: 200, body: JSON.stringify(sheets)});
     } catch(e) {
         console.error(e);
         callback(e);
