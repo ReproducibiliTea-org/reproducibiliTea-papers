@@ -4,7 +4,7 @@
       <b-button label="Load resource list"/>
     </div>
     <section v-else class="main">
-      <b-select expanded v-model="currentItemTitle">
+      <b-select expanded v-model="currentItemTitle" class="lists">
         <option v-for="item in $store.state.items"
                 :key="item.Title"
                 :value="item.Title"
@@ -62,6 +62,7 @@ export default {
   justify-content: center;
   min-height: 60vh;
   margin: 1em auto;
+  padding: .5em;
 }
 .items > h2 {
   text-align: center;
