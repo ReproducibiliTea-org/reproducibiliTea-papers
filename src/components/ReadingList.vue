@@ -8,18 +8,23 @@
     >
         <template #detail="props">
             <div class="content">
-                <p v-if="props.row.Summary.length">
+                <p v-if="props.row.Summary">
                     <strong>Summary:</strong> {{ props.row.Summary }}
                 </p>
-                <p v-if="props.row.Resource_url.length">
+                <p v-if="props.row.Resource_url">
                     <a :href="props.row.Resource_url" target="_blank">
                         {{ props.row.Resource_description }}
                     </a>
                 </p>
                 <div class="tags" v-if="props.row.Keywords.length">
-                    <b-tag v-for="kw in props.row.Keywords" :key="kw">
-                        {{ kw }}
-                    </b-tag>
+                    <a v-for="kw in props.row.Keywords"
+                       :key="kw"
+                       :href="`https://www.zotero.org/groups/2354006/reproducibilitea/tags/${kw}/`"
+                       target="_blank"
+                       class="tag-anchor"
+                    >
+                        <b-tag>{{ kw }}</b-tag>
+                    </a>
                 </div>
             </div>
         </template>
@@ -54,5 +59,5 @@ export default {
 </script>
 
 <style scoped>
-
+.tag-anchor {margin-right: .5em;}
 </style>
