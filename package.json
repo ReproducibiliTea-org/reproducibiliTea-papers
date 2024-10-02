@@ -1,50 +1,53 @@
 {
-  "name": "ukrn-open-research-resources",
-  "version": "0.1.0",
+  "name": "reproducibilitea-reading-lists",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve && netlify-lambda serve src/lambda",
-    "build": "netlify-lambda build src/lambda && vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "dev": "vite dev",
+    "netlify:build": "netlify build",
+    "netlify:dev": "netlify dev",
+    "build": "vite build",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
   },
   "dependencies": {
-    "@babel/runtime": "^7.13.10",
-    "@vue/cli": "^4.5.12",
-    "buefy": "^0.9.4",
-    "core-js": "^3.6.5",
-    "dotenv": "^8.2.0",
+    "@babel/runtime": "^7.25.6",
+    "@netlify/functions": "^2.8.2",
+    "@vitejs/plugin-legacy": "^5.4.2",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/cli": "^5.0.8",
+    "dotenv": "^16.4.5",
     "encoding": "^0.1.13",
-    "google-spreadsheet": "^3.1.15",
-    "sass": "^1.32.8",
-    "sass-loader": "^10.1.1",
-    "vue": "^2.6.11",
-    "vuex": "^3.6.2"
+    "google-auth-library": "^9.14.1",
+    "google-spreadsheet": "^4.1.4",
+    "googleapis": "^144.0.0",
+    "pinia": "^2.2.3",
+    "sass": "^1.79.4",
+    "vite": "^5.4.8",
+    "vue": "^3.5.10",
+    "vuetify": "^3.7.2",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "@babel/plugin-transform-runtime": "^7.13.10",
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
-    "netlify-lambda": "^2.0.3",
+    "@babel/plugin-transform-runtime": "^7.25.4",
+    "@mdi/font": "^7.4.47",
+    "concurrently": "^9.0.1",
+    "eslint": "^9.11.1",
+    "eslint-plugin-vue": "^9.28.0",
+    "netlify-cli": "^10.14.0",
     "vue-cli-plugin-netlify-lambda": "^0.1.1",
-    "vue-template-compiler": "^2.6.11",
-    "webpack": "^4.44.2"
+    "webpack": "^5.95.0"
   },
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "es2022": true
     },
     "extends": [
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
+    "parserOptions": {},
     "rules": {}
   },
   "browserslist": [

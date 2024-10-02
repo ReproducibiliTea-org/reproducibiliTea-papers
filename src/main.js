@@ -1,12 +1,22 @@
-import Vue from 'vue'
+import {createApp} from 'vue'
+import { createPinia } from 'pinia';
 import App from './App.vue'
-import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
 
-Vue.use(Buefy)
+// Vuetify
+import '@mdi/font/css/materialdesignicons.css'
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
-Vue.config.productionTip = false
+const vuetify = createVuetify({
+  components,
+  directives,
+})
+const pinia = createPinia();
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+const app = createApp(App)
+
+app.use(vuetify)
+app.use(pinia)
+app.mount('#app')
