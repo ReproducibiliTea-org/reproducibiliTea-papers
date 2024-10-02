@@ -1,6 +1,6 @@
-
-
 # ReproducibiliTea Reading List
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/c3522ff2-8dc3-4029-84e2-3146329070c2/deploy-status)](https://app.netlify.com/sites/rpt-rl/deploys)
 
 ## About
 
